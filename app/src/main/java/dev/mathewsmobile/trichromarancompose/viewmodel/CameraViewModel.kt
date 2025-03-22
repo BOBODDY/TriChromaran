@@ -13,10 +13,10 @@ import androidx.camera.core.ImageProxy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.mathewsmobile.trichromarancompose.Channel
-import dev.mathewsmobile.trichromarancompose.combineRGBChannels
+import dev.mathewsmobile.trichromarancompose.ext.Channel
+import dev.mathewsmobile.trichromarancompose.ext.combineRGBChannels
 import dev.mathewsmobile.trichromarancompose.data.usecase.AddImageUseCase
-import dev.mathewsmobile.trichromarancompose.saveColorChannelToImage
+import dev.mathewsmobile.trichromarancompose.ext.saveColorChannelToImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

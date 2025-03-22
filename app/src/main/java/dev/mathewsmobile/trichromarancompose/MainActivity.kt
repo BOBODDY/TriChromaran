@@ -15,11 +15,14 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mathewsmobile.trichromarancompose.ui.screen.CameraScreen
 import dev.mathewsmobile.trichromarancompose.ui.screen.CameraScreenRoute
 import dev.mathewsmobile.trichromarancompose.ui.screen.GalleryScreen
 import dev.mathewsmobile.trichromarancompose.ui.screen.GalleryScreenRoute
+import dev.mathewsmobile.trichromarancompose.ui.screen.ViewImageRoute
+import dev.mathewsmobile.trichromarancompose.ui.screen.ViewImageScreen
 import dev.mathewsmobile.trichromarancompose.ui.theme.TriChromaranComposeTheme
 import dev.mathewsmobile.trichromarancompose.viewmodel.CameraViewModel
 import dev.mathewsmobile.trichromarancompose.viewmodel.GalleryViewModel
@@ -47,7 +50,25 @@ class MainActivity : ComponentActivity() {
 
                     composable<GalleryScreenRoute> {
                         val viewModel by viewModels<GalleryViewModel>()
-                        GalleryScreen(modifier = Modifier, viewModel = viewModel)
+                        GalleryScreen(
+                            modifier = Modifier,
+                            viewModel = viewModel,
+                            onViewImage = { image ->
+                                navController.navigate(ViewImageRoute(image.path, image.takenAt))
+                            }
+                        )
+                    }
+
+                    composable<ViewImageRoute> { backstackEntry ->
+                        val route = backstackEntry.toRoute<ViewImageRoute>()
+                        ViewImageScreen(
+                            modifier = Modifier,
+                            imagePath = route.imagePath,
+                            timestamp = route.timestamp,
+                            onDismiss = {
+                                navController.popBackStack()
+                            }
+                        )
                     }
                 }
             }

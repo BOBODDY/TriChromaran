@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import dev.mathewsmobile.trichromarancompose.data.model.Image
 import dev.mathewsmobile.trichromarancompose.ui.component.Gallery
 import dev.mathewsmobile.trichromarancompose.viewmodel.GalleryViewModel
 import kotlinx.serialization.Serializable
@@ -15,18 +16,14 @@ import kotlinx.serialization.Serializable
 object GalleryScreenRoute
 
 @Composable
-fun GalleryScreen(modifier: Modifier = Modifier, viewModel: GalleryViewModel) {
+fun GalleryScreen(modifier: Modifier = Modifier, viewModel: GalleryViewModel, onViewImage: (Image) -> Unit) {
     val uiState = viewModel.uiState.collectAsState()
-    var selectedImage by remember { mutableStateOf<String?>(null) }
 
     Gallery(
         modifier,
         uiState.value.images,
         onImageSelected = {
-            selectedImage = it
+            onViewImage(it)
         },
-        onDismissImage = {
-            selectedImage = null
-        }
     )
 }

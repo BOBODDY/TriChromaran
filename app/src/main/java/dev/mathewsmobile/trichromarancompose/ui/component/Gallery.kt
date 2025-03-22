@@ -17,15 +17,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
+import dev.mathewsmobile.trichromarancompose.data.model.Image
 import dev.mathewsmobile.trichromarancompose.ui.theme.TriChromaranComposeTheme
 
 @Composable
 fun Gallery(
     modifier: Modifier = Modifier,
-    images: List<String>,
+    images: List<Image>,
     selectedImage: String? = null,
-    onImageSelected: (String) -> Unit = {},
-    onDismissImage: () -> Unit = {}
+    onImageSelected: (Image) -> Unit = {}
 ) {
     Box(modifier.fillMaxSize()) {
         selectedImage?.let {
@@ -33,9 +33,6 @@ fun Gallery(
                 AsyncImage(
                     model = it.toUri(),
                     contentDescription = null,
-                    modifier = modifier.clickable {
-                        onDismissImage
-                    }
                 )
             }
         }
@@ -47,7 +44,7 @@ fun Gallery(
             item {
                 Text(text = "Previous images")
             }
-            items(images) { uri ->
+            items(images) { image ->
                 if (LocalInspectionMode.current) {
                     Box(
                         modifier = modifier
@@ -56,10 +53,10 @@ fun Gallery(
                     )
                 } else {
                     AsyncImage(
-                        model = uri.toUri(),
+                        model = image.path.toUri(),
                         contentDescription = null,
                         modifier = Modifier.padding(8.dp).clickable {
-                            onImageSelected(uri)
+                            onImageSelected(image)
                         },
                     )
                 }
@@ -74,7 +71,7 @@ private fun GalleryPreview() {
     TriChromaranComposeTheme {
         Gallery(
             Modifier.background(Color.White),
-            listOf("")
+            emptyList()
         )
     }
 }

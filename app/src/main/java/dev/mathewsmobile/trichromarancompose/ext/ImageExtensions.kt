@@ -1,4 +1,4 @@
-package dev.mathewsmobile.trichromarancompose
+package dev.mathewsmobile.trichromarancompose.ext
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
