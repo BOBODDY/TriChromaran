@@ -16,7 +16,11 @@ import kotlinx.serialization.Serializable
 object GalleryScreenRoute
 
 @Composable
-fun GalleryScreen(modifier: Modifier = Modifier, viewModel: GalleryViewModel, onViewImage: (Image) -> Unit) {
+fun GalleryScreen(
+    modifier: Modifier = Modifier,
+    viewModel: GalleryViewModel,
+    onViewImage: (Image) -> Unit
+) {
     val uiState = viewModel.uiState.collectAsState()
 
     Gallery(
