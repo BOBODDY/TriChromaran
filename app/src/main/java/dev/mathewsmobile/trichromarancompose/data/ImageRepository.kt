@@ -17,6 +17,10 @@ class ImageRepository @Inject constructor(
         return imageDao.getAll()
     }
 
+    fun getLastImage(): Flow<Image?> {
+        return imageDao.getLastImage()
+    }
+
     suspend fun getImageById(id: Int): Image? {
         return imageDao.getById(id)
     }

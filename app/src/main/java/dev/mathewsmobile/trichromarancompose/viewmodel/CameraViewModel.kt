@@ -13,16 +13,20 @@ import androidx.camera.core.ImageProxy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.mathewsmobile.trichromarancompose.data.model.Image
 import dev.mathewsmobile.trichromarancompose.ext.Channel
 import dev.mathewsmobile.trichromarancompose.ext.combineRGBChannels
 import dev.mathewsmobile.trichromarancompose.data.usecase.AddImageUseCase
+import dev.mathewsmobile.trichromarancompose.data.usecase.GetLastImageUseCase
 import dev.mathewsmobile.trichromarancompose.ext.saveColorChannelToImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -44,11 +48,26 @@ sealed interface CameraUiState {
 
 @HiltViewModel
 class CameraViewModel @Inject constructor(
-    private val addImageUseCase: AddImageUseCase
+    private val addImageUseCase: AddImageUseCase,
+    private val getLastImageUseCase: GetLastImageUseCase,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<CameraUiState> = MutableStateFlow(CameraUiState.Ready)
     val uiState: StateFlow<CameraUiState> = _uiState
+
+    val mostRecentImage: StateFlow<Image?> = getLastImageUseCase().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = null
+    )
+
+    init {
+        viewModelScope.launch {
+            getLastImageUseCase().collect {
+                _uiState.emit(CameraUiState.Ready)
+            }
+        }
+    }
 
     // Create a dedicated Executor for CameraX operations.  A single thread is often sufficient.
     private val cameraExecutor = Executors.newSingleThreadExecutor()

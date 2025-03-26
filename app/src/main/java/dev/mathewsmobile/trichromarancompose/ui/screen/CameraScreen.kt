@@ -16,8 +16,6 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -56,6 +54,7 @@ fun CameraScreen(
     var showLoading by remember { mutableStateOf(false) }
 
     val uiState by viewModel.uiState.collectAsState()
+    val latestImage by viewModel.mostRecentImage.collectAsState()
 
     val imageCapture = remember {
         ImageCapture.Builder()
@@ -113,6 +112,9 @@ fun CameraScreen(
 
             ButtonRow(
                 modifier = modifier,
+                shutterEnabled = !showLoading,
+                isLoading = showLoading,
+                mostRecentImage = latestImage?.path,
                 onCaptureImage = {
                     viewModel.captureImages(imageCapture, context, sliderPosition)
                 },

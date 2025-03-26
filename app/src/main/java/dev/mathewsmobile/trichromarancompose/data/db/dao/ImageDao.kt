@@ -14,6 +14,9 @@ interface ImageDao {
     @Query("SELECT * FROM image WHERE id = :id")
     suspend fun getById(id: Int): Image?
 
+    @Query("SELECT * FROM image ORDER BY takenAt DESC LIMIT 1")
+    fun getLastImage(): Flow<Image?>
+
     @Insert
     suspend fun insert(image: Image)
 
