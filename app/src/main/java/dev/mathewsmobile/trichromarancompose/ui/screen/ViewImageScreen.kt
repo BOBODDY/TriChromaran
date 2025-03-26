@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -42,7 +43,8 @@ fun ViewImageScreen(
     modifier: Modifier = Modifier,
     imagePath: String,
     timestamp: Long,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onShare: (Uri) -> Unit
 ) {
     Box(
         modifier
@@ -52,6 +54,9 @@ fun ViewImageScreen(
     ) {
         Button(modifier = modifier.align(Alignment.TopStart).padding(16.dp), onClick = { onDismiss() }) {
             Icon(Icons.Default.Close, tint = Color.White, contentDescription = "Close")
+        }
+        Button(modifier = modifier.align(Alignment.TopEnd).padding(16.dp), onClick = { onShare(imagePath.toUri()) }) {
+            Icon(Icons.Default.Share, tint = Color.White, contentDescription = "Share")
         }
         Column(
             modifier = modifier.align(Alignment.Center),
@@ -82,6 +87,7 @@ private fun ViewImagePreview() {
         imagePath = "",
         timestamp = 0L,
         modifier = Modifier,
-        onDismiss = {}
+        onDismiss = {},
+        onShare = {}
     )
 }

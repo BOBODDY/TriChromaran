@@ -1,6 +1,7 @@
 package dev.mathewsmobile.trichromarancompose
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -67,6 +68,15 @@ class MainActivity : ComponentActivity() {
                             timestamp = route.timestamp,
                             onDismiss = {
                                 navController.popBackStack()
+                            },
+                            onShare = { imageUri ->
+                                val shareIntent: Intent = Intent().apply {
+                                    action = Intent.ACTION_SEND
+                                    // Example: content://com.google.android.apps.photos.contentprovider/...
+                                    putExtra(Intent.EXTRA_STREAM, imageUri)
+                                    type = "image/jpeg"
+                                }
+                                startActivity(Intent.createChooser(shareIntent, null))
                             }
                         )
                     }
