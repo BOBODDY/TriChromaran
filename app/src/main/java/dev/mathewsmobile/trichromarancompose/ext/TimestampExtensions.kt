@@ -8,3 +8,9 @@ fun Long.toTime(): String {
     val format = SimpleDateFormat("yyyy.MM.dd HH:mm")
     return format.format(date)
 }
+
+fun Long.toDate(): String {
+    val date = Date(this)
+    val format = SimpleDateFormat("yyyy.MM.dd")
+    return format.format(date)
+}

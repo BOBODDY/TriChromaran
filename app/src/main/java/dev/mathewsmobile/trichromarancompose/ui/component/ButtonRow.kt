@@ -59,13 +59,16 @@ fun ButtonRow(
                 onCaptureImage()
             }
         ) {
-            Box(
-                modifier
-                    .clip(CircleShape)
-                    .size(64.dp)
-                    .background(Color.LightGray)
-            )
+//            Box(
+//                modifier
+//                    .clip(CircleShape)
+//                    .size(64.dp)
+//                    .background(Color.LightGray)
+//            )
 
+            if (isLoading) {
+                CircularProgressIndicator()
+            }
         }
     }
 }
